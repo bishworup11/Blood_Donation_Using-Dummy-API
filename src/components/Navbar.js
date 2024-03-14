@@ -1,10 +1,11 @@
 // Navbar.js
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import p from './blood.jpg';
 
 export default function Navbar({ onSearch }) {
   const [searchText, setSearchText] = useState("");
-  const [blood, setBlood] = useState(""); // Default value or just ""
+  const [blood, setBlood] = useState("Blood Group"); // Default value or just ""
 
   // Function to handle search input change
   const handleSearchInputChange = (event) => {
@@ -30,19 +31,19 @@ export default function Navbar({ onSearch }) {
   };
 
   return (
-    <nav className="navbar navbar-light bg-light">
-      <div className="container-fluid">
+    <nav style={{ zIndex: "11", position:"fixed", width:"100%",  borderWidth:"0px"}} className="navbar navbar-light bg-light">
+      <div  style={{backgroundColor:"#eee9e9"}} className="container-fluid">
         <div className="d-flex">
           <Link className="navbar-brand" to="/" onClick={handleClickNavbar}>
-            Navbar
+          <img height="60px" width="100%" src={p} />
           </Link>
-          <Link className="navbar-brand" to="/about">
+          <Link style={{paddingTop:"20px"}} className="navbar-brand" to="/about">
             About
           </Link>
         </div>
 
         <form className="d-flex" onSubmit={handleFormSubmit}>
-          <label htmlFor="bloodGroup" style={{marginInlineEnd:"10px"}}>Blood Group:</label>
+          <label htmlFor="bloodGroup" style={{marginInlineEnd:"10px", paddingTop:"6px", width:"200px"}}>Blood Group:</label>
           <select
             name="bloodGroup"
             id="bloodGroup"
@@ -50,6 +51,7 @@ export default function Navbar({ onSearch }) {
             value={blood}
             onChange={handleBloodChange}
           >
+           
             <option value="A+">A+</option>
             <option value="B+">B+</option>
             <option value="AB+">AB+</option>

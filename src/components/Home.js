@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserCard from "./UserCard";
 import { Link } from "react-router-dom";
 
-export default function Home({searchText,blood}) {
+export default function Home({ searchText, blood }) {
   const [users, setUsers] = useState([]);
   const [url, setUrl] = useState("https://dummyjson.com/users");
 
@@ -12,10 +12,10 @@ export default function Home({searchText,blood}) {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-  
+
       let data = await response.json();
       let filteredUsers = data.users;
-  
+
       // Filtering by city
       if (searchText !== undefined && searchText.trim() !== "") {
         const regex = new RegExp(searchText, 'i');
@@ -24,12 +24,12 @@ export default function Home({searchText,blood}) {
           return regex.test(city);
         });
       }
-  
+
       // Filtering by blood group
       if (blood !== undefined && blood.trim() !== "") {
         filteredUsers = filteredUsers.filter(user => user.bloodGroup === blood);
       }
-  
+
       filteredUsers = filteredUsers.sort((a, b) => {
         let fullNameA = a.firstName + (a.maidenName || '') + a.lastName;
         let fullNameB = b.firstName + (b.maidenName || '') + b.lastName;
@@ -39,20 +39,16 @@ export default function Home({searchText,blood}) {
           return a.email.localeCompare(b.email);
         }
       });
-  
+
       setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  
-  
 
-  
   useEffect(() => {
-   
     fetchData();
-  }, [searchText,blood]); 
+  }, [searchText, blood]);
 
   return (
     <>
@@ -65,11 +61,15 @@ export default function Home({searchText,blood}) {
         </nav>
         {/* /Breadcrumb */}
         <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
-          {users && users.map((element) => (
-            <div className="col" key={element.id}>
-              <UserCard props={element} />
-            </div>
-          ))}
+          {users.length ? (
+            users.map((element) => (
+              <div className="col" key={element.id}>
+                <UserCard props={element} />
+              </div>
+            ))
+          ) : (
+            <h3 style={{margin:"50px", paddingTop:"200px", width:"100%"}}>No Donor Information</h3>
+          )}
         </div>
       </div>
     </>
