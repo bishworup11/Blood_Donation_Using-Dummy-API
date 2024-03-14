@@ -10,10 +10,12 @@ import About from './components/About';
 function App() {
   // Define state to hold the search bar text
   const [searchText, setSearchText] = useState('');
+  const [blood, setBlood] = useState('');
 
   // Function to update the search bar text
-  const handleSearchTextChange = (text) => {
+  const handleSearchTextChange = (text,blood) => {
     setSearchText(text);
+    setBlood(blood);
   };
 
  
@@ -25,7 +27,7 @@ function App() {
         <Navbar onSearch={handleSearchTextChange} /> {/* Updated prop name */}
         <Routes>
           {/* Pass searchText as a prop to Home */}
-          <Route path="/" element={<Home searchText={searchText} />} />
+          <Route path="/" element={<Home searchText={searchText} blood={blood} />} />
           <Route path="/:id" element={<Profile />} />
           <Route path="/about" element={<About/>} />
         </Routes>

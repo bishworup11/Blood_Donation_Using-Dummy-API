@@ -3,16 +3,20 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar({ onSearch }) {
-  // Updated prop name
   const [searchText, setSearchText] = useState("");
-  const [blood, setBlood] = useState("");
+  const [blood, setBlood] = useState(""); // Default value or just ""
 
   // Function to handle search input change
   const handleSearchInputChange = (event) => {
     setSearchText(event.target.value);
   };
 
-  const handleClickNavber = (event) => {
+  // Function to handle blood group change
+  const handleBloodChange = (event) => {
+    setBlood(event.target.value);
+  };
+
+  const handleClickNavbar = (event) => {
     setSearchText("");
     onSearch("");
   };
@@ -20,14 +24,16 @@ export default function Navbar({ onSearch }) {
   // Function to handle form submit
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    onSearch(searchText);
+    // Assuming you want to use both searchText and blood in the onSearch function
+    // You might need to adjust onSearch to handle both these values.
+    onSearch(searchText, blood);
   };
 
   return (
     <nav className="navbar navbar-light bg-light">
       <div className="container-fluid">
-        <div className=" d-flex ">
-          <Link className="navbar-brand" to="/" onClick={handleClickNavber}>
+        <div className="d-flex">
+          <Link className="navbar-brand" to="/" onClick={handleClickNavbar}>
             Navbar
           </Link>
           <Link className="navbar-brand" to="/about">
@@ -36,8 +42,14 @@ export default function Navbar({ onSearch }) {
         </div>
 
         <form className="d-flex" onSubmit={handleFormSubmit}>
-          <label for="cars" style={{marginInlineEnd:"10px"}} >Blood Group:</label>
-          <select name="cars" id="cars" style={{marginInlineEnd:"10px"}}>
+          <label htmlFor="bloodGroup" style={{marginInlineEnd:"10px"}}>Blood Group:</label>
+          <select
+            name="bloodGroup"
+            id="bloodGroup"
+            style={{marginInlineEnd:"10px"}}
+            value={blood}
+            onChange={handleBloodChange}
+          >
             <option value="A+">A+</option>
             <option value="B+">B+</option>
             <option value="AB+">AB+</option>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserCard from "./UserCard";
 import { Link } from "react-router-dom";
 
-export default function Home({ searchText }) {
+export default function Home({searchText,blood}) {
   const [users, setUsers] = useState([]);
   const [url, setUrl] = useState("https://dummyjson.com/users");
 
@@ -14,43 +14,45 @@ export default function Home({ searchText }) {
       }
   
       let data = await response.json();
-      let filteredUsers = data.users; //  set users to all data
+      let filteredUsers = data.users;
+  
+      // Filtering by city
       if (searchText !== undefined && searchText.trim() !== "") {
-       
-
-        const regex = new RegExp(searchText, 'i'); // 'i' for case-insensitive search
-        
-        // partial name match
-        filteredUsers = data.users.filter(user => {
-          let fullName = user.firstName + (user.maidenName || '') + user.lastName;
-          let city=user.address.city;
+        const regex = new RegExp(searchText, 'i');
+        filteredUsers = filteredUsers.filter(user => {
+          let city = user.address.city;
           return regex.test(city);
         });
-
-        filteredUsers = filteredUsers.sort((a, b) => {
-          let fullNameA = a.firstName + (a.maidenName || '') + a.lastName;
-          let fullNameB = b.firstName + (b.maidenName || '') + b.lastName;
-          if (fullNameA !== fullNameB) {
-            return fullNameA.localeCompare(fullNameB); 
-          } else {
-            return a.email.localeCompare(b.email); 
-          }
-        });
-
       }
-      
+  
+      // Filtering by blood group
+      if (blood !== undefined && blood.trim() !== "") {
+        filteredUsers = filteredUsers.filter(user => user.bloodGroup === blood);
+      }
+  
+      filteredUsers = filteredUsers.sort((a, b) => {
+        let fullNameA = a.firstName + (a.maidenName || '') + a.lastName;
+        let fullNameB = b.firstName + (b.maidenName || '') + b.lastName;
+        if (fullNameA !== fullNameB) {
+          return fullNameA.localeCompare(fullNameB);
+        } else {
+          return a.email.localeCompare(b.email);
+        }
+      });
+  
       setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
   
+  
 
   
   useEffect(() => {
    
     fetchData();
-  }, [searchText]); 
+  }, [searchText,blood]); 
 
   return (
     <>
